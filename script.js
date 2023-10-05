@@ -3,18 +3,11 @@ const newBookDialog = document.querySelector("dialog")
 const newBookButton = document.querySelector("#newBookButton")
 const closeButton = document.querySelector("#cancel")
 const submitButton = document.querySelector("#submit")
-const bookTitle = document.querySelector("#title")
-const bookAuthor = document.querySelector("#author")
-const bookPages = document.querySelector("#pages")
-const bookRead = document.querySelector("#read")
+const checkRead = document.querySelector("#read")
 
 newBookButton.addEventListener("click", () => newBookDialog.showModal())
 closeButton.addEventListener("click", () => newBookDialog.close())
-submitButton.addEventListener("click", () => {
-    addBookToLibrary(bookTitle.value, bookAuthor.value, bookPages.value, bookRead.value)
-    newBookDialog.close()
-    display()
-})
+submitButton.addEventListener("click", addBookToLibrary)
 
 function Book(title, author, pages, read) {
     this.title = title
@@ -27,9 +20,13 @@ function Book(title, author, pages, read) {
     }
 }
 
-function addBookToLibrary(title, author, pages, read = false) { // record values in form textboxes, generate new book object with values
-    title = Book(title, author, pages, read)
-    myLibrary.push(title)
+function addBookToLibrary(ev) { // record values in form textboxes, generate new book object with values
+    ev.preventDefault();
+    const inputs = Array.from(document.querySelectorAll("#bookForm input")).reduce((acc, input) => 
+    ({...acc, [input.id]: input.value }), {})
+    let book = new Book(inputs["title"], inputs["author"], inputs["pages"], checkRead.checked)
+    myLibrary.push(book)
+    console.log(myLibrary)
 }
 
 function display() { // loop through book objects in array and add html element for each
