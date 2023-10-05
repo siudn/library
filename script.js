@@ -26,11 +26,12 @@ function addBookToLibrary(ev) { // record values in form textboxes, generate new
     ({...acc, [input.id]: input.value }), {})
     let book = new Book(inputs["title"], inputs["author"], inputs["pages"], checkRead.checked)
     myLibrary.push(book)
-    console.log(myLibrary)
+    newBookDialog.close()
+    display()
 }
 
 function display() { // loop through book objects in array and add html element for each
     myLibrary.forEach(book => {
-        console.log(book.info)
+        console.log(book.info())
     })
 }
