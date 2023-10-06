@@ -22,6 +22,15 @@ function Book(title, author, pages, read) {
     }
 }
 
+Book.prototype.toggleRead = function() {
+    this.read = !this.read
+}
+
+function toggleRead(index) {
+    myLibrary[index].toggleRead()
+    display()
+}
+
 function addBookToLibrary(ev) { // record values in form textboxes, generate new book object with values
     ev.preventDefault();
     const inputs = Array.from(document.querySelectorAll("#bookForm input")).reduce((acc, input) => 
@@ -52,6 +61,7 @@ function display() { // loop through book objects in array and add html element 
                 <p>${book.pages} pages</p>
                 <p class="read-status">${book.read ? "Read" : "Not Read Yet"}</p>
                 <button class="remove-btn" onclick="removeBook(${myLibrary.indexOf(book)})">Remove</button>
+                <button class="toggle-read-btn" onclick="toggleRead(${myLibrary.indexOf(book)})">Toggle Read</button>
             </div>
         `
         booksDisplay.appendChild(displayBook)
