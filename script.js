@@ -4,6 +4,7 @@ const newBookButton = document.querySelector("#newBookButton")
 const closeButton = document.querySelector("#cancel")
 const submitButton = document.querySelector("#submit")
 const checkRead = document.querySelector("#read")
+const booksDisplay = document.querySelector(".books")
 
 newBookButton.addEventListener("click", () => newBookDialog.showModal())
 closeButton.addEventListener("click", () => newBookDialog.close())
@@ -26,12 +27,25 @@ function addBookToLibrary(ev) { // record values in form textboxes, generate new
     ({...acc, [input.id]: input.value }), {})
     let book = new Book(inputs["title"], inputs["author"], inputs["pages"], checkRead.checked)
     myLibrary.push(book)
+    display(book)
     newBookDialog.close()
-    display()
 }
 
 function display() { // loop through book objects in array and add html element for each
+    booksDisplay.innerHTML = ""
     myLibrary.forEach(book => {
-        console.log(book.info())
+        let displayBook = document.createElement("div")
+        displayBook.classList.add("book")
+        displayBook.innerHTML = `
+            <div class="card-header">
+                <p class="title">${book.title}</p>
+                <p class="author">by ${book.author}</p>
+            </div>
+            <div class="card-body">
+                <p>${book.pages} pages</p>
+                <p class="read-status">${book.read ? "Read" : "Not Read Yet"}</p>
+            </div>
+        `
+        booksDisplay.appendChild(displayBook)
     })
 }
