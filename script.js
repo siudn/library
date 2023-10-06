@@ -5,6 +5,7 @@ const closeButton = document.querySelector("#cancel")
 const submitButton = document.querySelector("#submit")
 const checkRead = document.querySelector("#read")
 const booksDisplay = document.querySelector(".books")
+const bookForm = document.querySelector("#bookForm")
 
 newBookButton.addEventListener("click", () => newBookDialog.showModal())
 closeButton.addEventListener("click", () => newBookDialog.close())
@@ -29,13 +30,19 @@ function addBookToLibrary(ev) { // record values in form textboxes, generate new
     myLibrary.push(book)
     display(book)
     newBookDialog.close()
+    bookForm.reset()
+}
+
+function removeBook(index) {
+    myLibrary.splice(index, 1)
+    display()
 }
 
 function display() { // loop through book objects in array and add html element for each
     booksDisplay.innerHTML = ""
     myLibrary.forEach(book => {
         let displayBook = document.createElement("div")
-        displayBook.classList.add("book")
+        displayBook.classList.add("bookCard")
         displayBook.innerHTML = `
             <div class="card-header">
                 <p class="title">${book.title}</p>
@@ -44,6 +51,7 @@ function display() { // loop through book objects in array and add html element 
             <div class="card-body">
                 <p>${book.pages} pages</p>
                 <p class="read-status">${book.read ? "Read" : "Not Read Yet"}</p>
+                <button class="remove-btn" onclick="removeBook(${myLibrary.indexOf(book)})">Remove</button>
             </div>
         `
         booksDisplay.appendChild(displayBook)
